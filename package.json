@@ -1,0 +1,22 @@
+{
+  "name": "paper-reading-map-ultimate",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "sync:obsidian": "node scripts/sync-obsidian.mjs",
+    "vercel-build": "next build"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-html": "^16.0.1"
+  }
+}
