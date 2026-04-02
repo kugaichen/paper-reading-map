@@ -114,14 +114,9 @@ export default function PaperReadingMapPage({ initialPapers }) {
               </select>
             </div>
           </div>
-          <div className="toolbar-bottom">
+          {/* <div className="toolbar-bottom" style={{ borderTop: "none", paddingTop: 0 }}>
             <div className="toolbar-result">{papers.length} results</div>
-            <div className="toolbar-actions">
-              <button className={density === 'compact' ? 'mode-btn active' : 'mode-btn'} onClick={() => setDensity('compact')}>Compact</button>
-              <button className={density === 'comfortable' ? 'mode-btn active' : 'mode-btn'} onClick={() => setDensity('comfortable')}>Comfortable</button>
-              <button className="reset-btn" onClick={() => { setQuery(''); setVenue('all'); setStage('all'); setTopic('all'); }}>Reset filters</button>
-            </div>
-          </div>
+          </div> */}
         </section>
 
         <section className="table-card">
