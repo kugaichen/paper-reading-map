@@ -25,8 +25,13 @@ function StatCard({ label, value, hint }) {
   );
 }
 
+function formatListText(text) {
+  if (!text) return '—';
+  return String(text).replace(/(?:;|；)?[ \t]+(?=\d+\.)/g, '\n').trim();
+}
+
 function sentencePreview(text, dense) {
-  return dense ? 'cell-clamp cell-clamp-2' : 'cell-clamp cell-clamp-3';
+  return dense ? 'cell-clamp cell-clamp-3' : 'cell-wrap';
 }
 
 export default function PaperReadingMapPage({ initialPapers }) {
@@ -68,10 +73,9 @@ export default function PaperReadingMapPage({ initialPapers }) {
     <main className="page-shell">
       <div className="page-container">
         <section className="hero-block">
-          <span className="eyebrow">paper note workspace</span>
           <h1 className="page-title">Paper Reading Map</h1>
           <p className="page-intro">
-            这是一张直接连接 Obsidian 论文笔记的阅读地图。默认只保留最适合快速浏览的字段：标题、时间、会议、主题、阅读阶段和一句话描述。真正复盘时，再展开查看优点、缺点和感想。
+            paper reading and learning of networking of performance / system / architecture / hardware
           </p>
         </section>
 
@@ -127,7 +131,7 @@ export default function PaperReadingMapPage({ initialPapers }) {
                 <tr>
                   <th className="title-col">标题</th>
                   <th className="year-col">时间</th>
-                  <th className="venue-col">会议</th>
+                  <th className="venue-col">会议/刊</th>
                   <th className="topics-col">主题</th>
                   <th className="stage-col">阅读阶段</th>
                   <th className="sentence-col">一句话描述</th>
@@ -163,7 +167,7 @@ export default function PaperReadingMapPage({ initialPapers }) {
                           </div>
                         </td>
                         <td data-label="时间">{paper.year || '—'}</td>
-                        <td data-label="会议" className="venue-text">{paper.venueTag || '—'}</td>
+                        <td data-label="会议/刊" className="venue-text">{paper.venueTag || '—'}</td>
                         <td data-label="主题">
                           <div className="chips-wrap">
                             {(paper.topics || []).slice(0, compact ? 2 : 4).map((item, i) => (
@@ -189,9 +193,9 @@ export default function PaperReadingMapPage({ initialPapers }) {
                               {showDeepNote ? <Link className="chip chip-link" href={`/papers/${paper.slug}`}>打开精读页</Link> : null}
                             </div>
                             <div className="expand-grid compact-expand-grid">
-                              <div className="detail-card"><div className="detail-label">优点</div><p>{paper.pros || '—'}</p></div>
-                              <div className="detail-card"><div className="detail-label">缺点</div><p>{paper.cons || '—'}</p></div>
-                              <div className="detail-card"><div className="detail-label">感想</div><p>{paper.thoughts || '—'}</p></div>
+                              <div className="detail-card"><div className="detail-label">优点</div><p>{formatListText(paper.pros)}</p></div>
+                              <div className="detail-card"><div className="detail-label">缺点</div><p>{formatListText(paper.cons)}</p></div>
+                              <div className="detail-card"><div className="detail-label">感想</div><p>{formatListText(paper.thoughts)}</p></div>
                             </div>
                           </td>
                         </tr>
