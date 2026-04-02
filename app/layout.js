@@ -1,8 +1,11 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Paper Reading Map',
-  description: 'A deployable paper reading map connected to structured Obsidian notes.',
+  title: 'NetPaper',
+  description: 'paper reading and learning of networking of performance / system / architecture / hardware.',
+  icons: {
+    icon: '/favicon.png', // 指向 public 目录下的 favicon.png
+  },
 };
 
 export default function RootLayout({ children }) {
