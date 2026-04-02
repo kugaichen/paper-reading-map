@@ -1,9 +1,14 @@
 ﻿param(
-    [string]$ProjectRoot = ".",
-    [string]$CommitMessage = ""
+    [string]$ProjectRoot = $PSScriptRoot,
+    [string]$CommitMessage = "",
+    [switch]$OpenPages
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+    $ProjectRoot = "."
+}
 
 Set-Location $ProjectRoot
 
@@ -15,14 +20,19 @@ if ([string]::IsNullOrWhiteSpace($CommitMessage)) {
     $CommitMessage = "update paper notes " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 }
 
+Write-Host ""
 Write-Host "==> Syncing Obsidian content..." -ForegroundColor Cyan
 npm run sync:obsidian
 if ($LASTEXITCODE -ne 0) {
     throw "npm run sync:obsidian 执行失败"
 }
 
+Write-Host ""
 Write-Host "==> Checking git changes..." -ForegroundColor Cyan
 git add .
+if ($LASTEXITCODE -ne 0) {
+    throw "git add 失败"
+}
 
 git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) {
@@ -30,16 +40,24 @@ if ($LASTEXITCODE -eq 0) {
     exit 0
 }
 
+Write-Host ""
 Write-Host "==> Committing changes..." -ForegroundColor Cyan
 git commit -m $CommitMessage
 if ($LASTEXITCODE -ne 0) {
     throw "git commit 失败"
 }
 
+Write-Host ""
 Write-Host "==> Pushing to remote..." -ForegroundColor Cyan
 git push
 if ($LASTEXITCODE -ne 0) {
     throw "git push 失败"
 }
 
-Write-Host "完成。Vercel 会自动开始重新部署。" -ForegroundColor Green
+Write-Host ""
+Write-Host "完成。GitHub 已推送，Vercel 会自动开始重新部署。" -ForegroundColor Green
+
+if ($OpenPages) {
+    Start-Process "https://github.com/kugaichen/paper-reading-map/actions"
+    Start-Process "https://vercel.com/dashboard"
+}
